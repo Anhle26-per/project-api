@@ -465,44 +465,26 @@ tabSize.addEventListener('change', () => {
 
 filterData.addEventListener("input", async () => {
     const searchTerm = filterData.value.toLowerCase().trim();
-
+    
     try {
-        // Fetch dữ liệu mới từ mock API
-        const response = await fetch(API_BASE_URL);
+        // Thêm tham số search vào URL API
+        const searchUrl = `${API_BASE_URL}?search=${searchTerm}`;
+        const response = await fetch(searchUrl);
         if (!response.ok) throw new Error('Failed to fetch data');
         const data = await response.json();
-
-        // Thêm ảnh mặc định vào dữ liệu lấy từ API
+        
         const dataWithDefaultImage = data.map(item => ({
             ...item,
             picture: "./img/pic1.png",
             id: item.id
         }));
-
-        // Nếu người dùng nhập từ khóa, lọc dữ liệu
-        if (searchTerm !== "") {
-            const filteredData = dataWithDefaultImage.filter((item) => {
-                const fullName = (item.fName + " " + item.lName).toLowerCase();
-                const city = item.cityVal.toLowerCase();
-                const position = item.positionVal.toLowerCase();
-
-                return (
-                    fullName.includes(searchTerm) ||
-                    city.includes(searchTerm) ||
-                    position.includes(searchTerm)
-                );
-            });
-            getData = filteredData;
-        } else {
-            // Nếu không có từ khóa, hiển thị toàn bộ dữ liệu
-            getData = [...dataWithDefaultImage];
-        }
-
+        
+        getData = dataWithDefaultImage;
         currentIndex = 1;
         startIndex = 1;
-        displayIndexBtn();  // Cập nhật giao diện phân trang
+        displayIndexBtn();
     } catch (error) {
         console.error('Error fetching search results:', error);
         alert('Failed to load search results. Please try again.');
     }
-})
+});
