@@ -399,3 +399,25 @@ input::-webkit-outer-spin-button{
     opacity: 1;
     visibility: visible;
 }
+th[data-sortable] {
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+}
+
+.sort-icon {
+    font-size: 12px;
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: none;
+}
+
+th[data-sortable]:hover {
+    background-color: whitesmoke;
+}
+
+th[data-sortable].active .sort-icon {
+    display: inline;
+}
